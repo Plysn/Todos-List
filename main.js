@@ -1,81 +1,93 @@
+var input = document.querySelector("input");
+var button = document.getElementById("button-add");
+var form = document.querySelector("form");
+var todos = document.querySelector(".todo-list");
 
-var input = document.querySelector('input')
-var button = document.getElementById('button-add')
-var form = document.querySelector('form')
-var todos = document.querySelector('.todo-list')
+// load data from localStorage
+let data = JSON.parse(localStorage.getItem("todoList"));
 
-button.addEventListener('click', function(event){
-  event.preventDefault()
-  let value = input.value.trim()
-  // let id = input.value.index
-  if(value){
+button.addEventListener("click", function (event) {
+  event.preventDefault();
+  let value = input.value.trim();
+  let id = new Date().toISOString();
+  if (value) {
     addList({
       text: value,
-      // id: index
-    })
-    saveTodoList()
+      status: null,
+      id,
+    });
+    saveTodoList();
   }
 
-  input.value = ''
-})
+  input.value = "";
+});
 
 function addList(todo) {
-  var li = document.createElement('li')
+  var li = document.createElement("li");
   li.innerHTML = `
     <span>${todo.text}</span>
     <div class="icon">
       <i class="fa-solid fa-pen-to-square edit"></i>
       <i class="fa-solid fa-trash delete"></i>
     </div>
-  `
+  `;
+  li.id = todo.id;
 
-  if(todo.status === 'completed') {
-    li.setAttribute('class', 'completed')
+  if (todo.status === "completed") {
+    li.setAttribute("class", "completed");
   }
 
-  li.querySelector('span').addEventListener('click', function(){
-    li.classList.toggle('completed')
-    saveTodoList()
-  })
+  li.querySelector("span").addEventListener("click", function () {
+    li.classList.toggle("completed");
+    saveTodoList();
+  });
 
-  li.querySelector('.delete').addEventListener('click', function(){
-    if(confirm('Cancel?')){
-      li.remove()
+  li.querySelector(".delete").addEventListener("click", function () {
+    if (confirm("Cancel?")) {
+      li.remove();
     }
-    saveTodoList()
-  })
+    saveTodoList();
+  });
 
-  todos.appendChild(li)
+  todos.appendChild(li);
 
-  li.querySelector('.edit').addEventListener('click', function(index){
-    
-  })
+  // edit
+  li.querySelector(".edit").addEventListener("click", function (index) {
+    const taskId = li.id;
+    const editTask = data.find((task) => task.id === taskId);
+    const newTaskText = prompt("Edit task", editTask.text);
+    if (newTaskText) {
+      li.querySelector("span").innerText = newTaskText;
+      saveTodoList();
+    }
+  });
 }
 
-function saveTodoList(){
-  let todoList = document.querySelectorAll('li')
-  let todoStorage = []
-  todoList.forEach(function(item){
-    let text = item.querySelector('span').innerText
-    let status = item.getAttribute('class')
-    // let id = item.setItem('id', 'index')
+function saveTodoList() {
+  let todoList = document.querySelectorAll("li");
+  let todoStorage = [];
+  todoList.forEach(function (item) {
+    let text = item.querySelector("span").innerText;
+    let status = item.getAttribute("class");
+    let id = item.id;
 
     todoStorage.push({
       text,
-      status
-    })
-  })
-  localStorage.setItem('todoList', JSON.stringify(todoStorage))
+      status,
+      id,
+    });
+  });
+  data = todoStorage;
+  localStorage.setItem("todoList", JSON.stringify(todoStorage));
 }
 
-function init(){
-  let data = JSON.parse(localStorage.getItem('todoList'))
-  data.forEach(function(item){
-    addList(item)
-  })
+function init() {
+  data.forEach(function (item) {
+    addList(item);
+  });
 }
-init()
+init();
 
-const input1 = JSON.parse(localStorage.getItem('todoList'))
-input1[0].text = "chiuchot"
-console.log(input1[0].text);
+const input1 = JSON.parse(localStorage.getItem("todoList"));
+// input1[0].text = "chiuchot";
+// console.log(input1[0].text);
