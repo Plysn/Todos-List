@@ -1,0 +1,114 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: #ccc;
+}
+
+.content {
+  width: 300px;
+  margin: auto;
+  margin-top: 100px;
+  background-color: #fff;
+  border: 1px solid #ccc ;
+  border-radius: 3px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  border-bottom: 2px solid #ccc;
+}
+
+.header input {
+  height: 100%;
+  width: 100%;
+  padding-left: 10px;
+  border: none;
+}
+
+input:focus {
+  border: none;
+}
+
+.button {
+  padding: 3px 6px;
+  margin: 3px 10px;
+  background-color: rgba(158, 211, 13, 0.8);
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: rgba(158, 211, 13, 0.6);
+}
+
+.todo-list {
+  list-style: none;
+}
+
+li {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+
+li span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 70%;
+}
+
+li i {
+  color: black;
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+li i:hover {
+  color: #ccc;
+}
+
+.completed span {
+  color: #ccc;
+  text-decoration: line-through;
+}
+
+/* Edit */
+
+.edit:hover .edit-form{
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-form {
+  display: none;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  width: 100%;
+  height: 80%;
+  top: 100%;
+  background-color: #fff;
+  box-shadow: 1px 2px 1px #ccc;
+  margin-left: -10px;
+  z-index: 1;
+}
+
+.edit-input {
+  height: 100%;
+  width: 80%;
+  border: 1px solid #ccc;
+  border: none;
+}
