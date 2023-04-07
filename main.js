@@ -3,21 +3,22 @@ var input = document.querySelector('input')
 var button = document.getElementById('button-add')
 var form = document.querySelector('form')
 var todos = document.querySelector('.todo-list')
+// get data from local storage
+let data = JSON.parse(localStorage.getItem('todoList'))
 
 button.addEventListener('click', function(event){
   event.preventDefault()
   let value = input.value.trim()
-  // let id = input.value.index
-  if(value){
+  let id = new Date().toISOString()
     addList({
       text: value,
-      // id: index
+      status: null,
+      id: id
     })
     saveTodoList()
+    input.value = ''
   }
-
-  input.value = ''
-})
+)
 
 function addList(todo) {
   var li = document.createElement('li')
@@ -28,6 +29,7 @@ function addList(todo) {
       <i class="fa-solid fa-trash delete"></i>
     </div>
   `
+  li.id = todo.id
 
   if(todo.status === 'completed') {
     li.setAttribute('class', 'completed')
@@ -47,8 +49,15 @@ function addList(todo) {
 
   todos.appendChild(li)
 
-  li.querySelector('.edit').addEventListener('click', function(index){
-    
+  li.querySelector('.edit').addEventListener('click', function(event){
+    const taskId = li.id;
+    const editTask = data.find((task) => task.id === taskId);
+
+    const newTaskText = prompt("Edit task", editTask.text);
+    if (newTaskText) {
+      li.querySelector("span").innerText = newTaskText;
+      saveTodoList();
+    }
   })
 }
 
@@ -58,24 +67,21 @@ function saveTodoList(){
   todoList.forEach(function(item){
     let text = item.querySelector('span').innerText
     let status = item.getAttribute('class')
-    // let id = item.setItem('id', 'index')
+    let id = item.id
 
     todoStorage.push({
       text,
-      status
+      status,
+      id
     })
   })
+  data = todoStorage
   localStorage.setItem('todoList', JSON.stringify(todoStorage))
 }
 
 function init(){
-  let data = JSON.parse(localStorage.getItem('todoList'))
   data.forEach(function(item){
     addList(item)
   })
 }
 init()
-
-const input1 = JSON.parse(localStorage.getItem('todoList'))
-input1[0].text = "chiuchot"
-console.log(input1[0].text);
