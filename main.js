@@ -10,6 +10,7 @@ button.addEventListener('click', function(event){
   event.preventDefault()
   let value = input.value.trim()
   let id = new Date().toISOString()
+  if(value){
     addList({
       text: value,
       status: null,
@@ -17,6 +18,7 @@ button.addEventListener('click', function(event){
     })
     saveTodoList()
     input.value = ''
+  }
   }
 )
 
